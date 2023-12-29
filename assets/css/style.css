@@ -1,4 +1,10 @@
-body {
-    font-family: Consolas, monospace;
+/* Color Theme */
+nav, .page-footer {
+    background-color: #3176d9;
 }
+
+nav .nav-wrapper > ul {
+    margin-left: 10em;
+}
+
 

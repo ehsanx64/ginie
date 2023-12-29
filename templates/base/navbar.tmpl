@@ -1,0 +1,23 @@
+{{ define "base/navbar.tmpl" }}
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper container">
+                <a href="#!" class="brand-logo">{{ .AppName }}</a>
+                <ul class="left hide-on-med-and-down">
+                    {{/*
+                    {{ range $title, $url := .MainMenu }}
+                    <li>
+                        <a href="{{ $url }}">{{ $title }}</a>
+                    </li>
+                    {{ end }}
+                    */}}
+                    {{ range .MainMenu }}
+                    <li>
+                        <a href="{{ .url }}">{{ .title }}</a>
+                    </li>
+                    {{ end }}
+                </ul>
+            </div>
+        </nav>
+    </div>
+{{ end }}
