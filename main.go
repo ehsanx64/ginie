@@ -36,6 +36,7 @@ func setOptions(args Option) gin.H {
 
 func main() {
 	router := gin.Default()
+	router.Use(Language())
 
 	router.SetFuncMap(template.FuncMap{
 		"xlate": xlate,
@@ -51,8 +52,7 @@ func main() {
 
 	// Define routes
 	router.GET("/", func(c *gin.Context) {
-		locale, _ := getLanguage(c)
-		setXlate(locale)
+		locale := c.GetString("locale")
 
 		rtl := false
 		templ := "pages/home.tmpl"
@@ -70,7 +70,8 @@ func main() {
 	})
 
 	router.GET("/about", func(c *gin.Context) {
-		locale, _ := getLanguage(c)
+		locale := c.GetString("locale")
+
 		rtl := false
 		templ := "pages/about.tmpl"
 

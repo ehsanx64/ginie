@@ -29,6 +29,7 @@ func setXlate(lang string) {
 }
 
 func setLanguage(c *gin.Context, locale string) {
+	c.Set("locale", locale)
 	c.SetCookie(cookieName, locale, 0, "/", "localhost", false, true)
 }
 
@@ -40,4 +41,15 @@ func getLanguage(c *gin.Context) (string, error) {
 	}
 
 	return cookie, nil
+}
+
+/*
+** Language middleware
+ */
+func Language() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		locale, _ := getLanguage(c)
+		setXlate(locale)
+		c.Set("locale", locale)
+	}
 }
