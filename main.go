@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 
@@ -20,24 +20,26 @@ func setOptions(args Option) gin.H {
 	}
 
 	out["AppName"] = "Ginie"
-
 	out["MainMenu"] = MainMenu{
 		0: NavLink{
-			"title": "Home",
+			"title": xlate("Home"),
 			"url":   "/",
 		},
 		1: NavLink{
-			"title": "About",
+			"title": xlate("About"),
 			"url":   "/about",
 		},
 	}
 
-	fmt.Println(out)
 	return out
 }
 
 func main() {
 	router := gin.Default()
+
+	router.SetFuncMap(template.FuncMap{
+		"xlate": xlate,
+	})
 
 	// Define templates
 	router.LoadHTMLGlob("templates/**/*")
@@ -50,6 +52,8 @@ func main() {
 	// Define routes
 	router.GET("/", func(c *gin.Context) {
 		locale, _ := getLanguage(c)
+		setXlate(locale)
+
 		rtl := false
 		templ := "pages/home.tmpl"
 

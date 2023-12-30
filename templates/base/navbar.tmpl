@@ -2,7 +2,8 @@
     <div class="navbar-fixed">
         <nav>
             <div class="nav-wrapper container">
-                <a href="#!" class="brand-logo">{{ .AppName }}</a>
+                <a href="#!" class="brand-logo">{{ if .rtl }}{{ .AppName | xlate }}{{ 
+                    else }}{{ .AppName }}{{ end }}</a>
                 <ul class="{{ if .rtl }}right{{ else }}left {{ end }} hide-on-med-and-down">
                     {{/*
                     {{ range $title, $url := .MainMenu }}
