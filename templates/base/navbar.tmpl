@@ -3,7 +3,7 @@
         <nav>
             <div class="nav-wrapper container">
                 <a href="#!" class="brand-logo">{{ .AppName }}</a>
-                <ul class="left hide-on-med-and-down">
+                <ul class="{{ if .rtl }}right{{ else }}left {{ end }} hide-on-med-and-down">
                     {{/*
                     {{ range $title, $url := .MainMenu }}
                     <li>
@@ -17,6 +17,13 @@
                     </li>
                     {{ end }}
                 </ul>
+
+                <div class="{{ if .rtl }}left{{ else }}right{{ end }} language-switch">
+                    <ul>
+                        <li><a href="/language/fa"><span>Fa</span></a></li>
+                        <li><a href="/language/en"><span>En</span></a></li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </div>

@@ -4,8 +4,8 @@ tmp_dir = "tmp"
 
 [build]
   args_bin = []
-  bin = "./tmp/ginie"
-  cmd = "go build -o ./tmp/ginie ."
+  bin = "./tmp/main"
+  cmd = "go build -o ./tmp/main ."
   delay = 0
   exclude_dir = ["assets", "tmp", "vendor", "testdata"]
   exclude_file = []
@@ -13,7 +13,7 @@ tmp_dir = "tmp"
   exclude_unchanged = false
   follow_symlink = false
   full_bin = ""
-  include_dir = ["resources", "static", "templates"]
+  include_dir = []
   include_ext = ["go", "tpl", "tmpl", "html"]
   include_file = []
   kill_delay = "0s"

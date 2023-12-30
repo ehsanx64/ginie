@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -26,10 +27,6 @@ func setOptions(args Option) gin.H {
 			"url":   "/",
 		},
 		1: NavLink{
-			"title": "RTL",
-			"url":   "/rtl",
-		},
-		2: NavLink{
 			"title": "About",
 			"url":   "/about",
 		},
@@ -52,22 +49,55 @@ func main() {
 
 	// Define routes
 	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "pages/home.tmpl", setOptions(Option{
-			"title": "Home",
-		}))
-	})
+		locale, _ := getLanguage(c)
+		rtl := false
+		templ := "pages/home.tmpl"
 
-	router.GET("/rtl", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "pages/home-fa.tmpl", setOptions(Option{
+		if locale == "fa" {
+			rtl = true
+			templ = "pages/home-fa.tmpl"
+		}
+
+		log.Println("Active template:", templ)
+		c.HTML(http.StatusOK, templ, setOptions(Option{
 			"title": "Home",
-			"rtl":   true,
+			"rtl":   rtl,
 		}))
 	})
 
 	router.GET("/about", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "pages/about.tmpl", setOptions(Option{
+		locale, _ := getLanguage(c)
+		rtl := false
+		templ := "pages/about.tmpl"
+
+		if locale == "fa" {
+			rtl = true
+			templ = "pages/about-fa.tmpl"
+		}
+
+		log.Println("Active template:", templ)
+		c.HTML(http.StatusOK, templ, setOptions(Option{
 			"title": "About",
+			"rtl":   rtl,
 		}))
+	})
+
+	router.GET("/language/:name", func(c *gin.Context) {
+		type Language struct {
+			Name string `uri:"name" binding:"required"`
+		}
+
+		var l Language
+		if err := c.ShouldBindUri(&l); err != nil {
+			c.JSON(400, gin.H{
+				"msg": err,
+			})
+
+			return
+		}
+
+		setLanguage(c, l.Name)
+		c.Redirect(http.StatusFound, "/")
 	})
 
 	// Define API endpoints
