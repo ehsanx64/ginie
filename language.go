@@ -1,8 +1,14 @@
 package main
 
 import (
+	"log"
+
 	"github.com/gin-gonic/gin"
 )
+
+type Language struct {
+	Name string `uri:"name" binding:"required"`
+}
 
 const cookieName = "locale"
 
@@ -15,6 +21,7 @@ var ts = map[string]string{
 var locale string = "en"
 
 func xlate(key string) string {
+	log.Println("xlate(", locale, ")")
 	if locale == "fa" {
 		if val, ok := ts[key]; ok {
 			return val
@@ -37,7 +44,7 @@ func getLanguage(c *gin.Context) (string, error) {
 	cookie, err := c.Cookie(cookieName)
 
 	if err != nil {
-		return "", err
+		return "en", err
 	}
 
 	return cookie, nil
@@ -46,7 +53,7 @@ func getLanguage(c *gin.Context) (string, error) {
 /*
 ** Language middleware
  */
-func Language() gin.HandlerFunc {
+func LanguageMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		locale, _ := getLanguage(c)
 		setXlate(locale)

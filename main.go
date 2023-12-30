@@ -2,41 +2,14 @@ package main
 
 import (
 	"html/template"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type Option map[string]any
-type NavLink map[string]string
-type MainMenu map[int]NavLink
-
-func setOptions(args Option) gin.H {
-	out := gin.H{}
-
-	for k, v := range args {
-		out[k] = v
-	}
-
-	out["AppName"] = "Ginie"
-	out["MainMenu"] = MainMenu{
-		0: NavLink{
-			"title": xlate("Home"),
-			"url":   "/",
-		},
-		1: NavLink{
-			"title": xlate("About"),
-			"url":   "/about",
-		},
-	}
-
-	return out
-}
-
 func main() {
 	router := gin.Default()
-	router.Use(Language())
+	router.Use(LanguageMiddleware())
 
 	router.SetFuncMap(template.FuncMap{
 		"xlate": xlate,
@@ -52,46 +25,18 @@ func main() {
 
 	// Define routes
 	router.GET("/", func(c *gin.Context) {
-		locale := c.GetString("locale")
-
-		rtl := false
-		templ := "pages/home.tmpl"
-
-		if locale == "fa" {
-			rtl = true
-			templ = "pages/home-fa.tmpl"
-		}
-
-		log.Println("Active template:", templ)
-		c.HTML(http.StatusOK, templ, setOptions(Option{
-			"title": "Home",
-			"rtl":   rtl,
-		}))
+		renderHTML(c, "pages/home", Option{
+			"title": xlate("Home"),
+		})
 	})
 
 	router.GET("/about", func(c *gin.Context) {
-		locale := c.GetString("locale")
-
-		rtl := false
-		templ := "pages/about.tmpl"
-
-		if locale == "fa" {
-			rtl = true
-			templ = "pages/about-fa.tmpl"
-		}
-
-		log.Println("Active template:", templ)
-		c.HTML(http.StatusOK, templ, setOptions(Option{
-			"title": "About",
-			"rtl":   rtl,
-		}))
+		renderHTML(c, "pages/about", Option{
+			"title": xlate("About"),
+		})
 	})
 
 	router.GET("/language/:name", func(c *gin.Context) {
-		type Language struct {
-			Name string `uri:"name" binding:"required"`
-		}
-
 		var l Language
 		if err := c.ShouldBindUri(&l); err != nil {
 			c.JSON(400, gin.H{
