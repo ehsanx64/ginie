@@ -50,18 +50,7 @@ func main() {
 		c.Redirect(http.StatusFound, "/")
 	})
 
-	// Define API endpoints
-	router.GET("/api/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Welcome to gin-app",
-		})
-	})
-
-	router.GET("/api/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	RegisterApiRoutes(router)
 
 	router.Run() // By default listen and serve on 0.0.0.0:8080
 }
