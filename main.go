@@ -7,6 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const (
+	DomainName = "localhost"
+)
+
 func main() {
 	router := gin.Default()
 	router.Use(LanguageMiddleware())
