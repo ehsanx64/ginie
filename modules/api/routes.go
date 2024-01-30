@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"github.com/gin-gonic/gin"
@@ -11,6 +11,7 @@ func RegisterApiRoutes(router *gin.Engine) {
 		apiRoute.GET("/", index)
 		apiRoute.GET("/ping", ping)
 	}
+
 }
 
 func index(c *gin.Context) {

@@ -17,7 +17,6 @@ func RegisterBlogRoutes(router *gin.Engine) {
 
 		blogRoute.GET("/test", test)
 	}
-
 }
 
 func test(c *gin.Context) {

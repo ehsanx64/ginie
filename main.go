@@ -2,6 +2,7 @@ package main
 
 import (
 	"ginie/lib"
+	"ginie/modules/api"
 	"ginie/modules/blog"
 	"html/template"
 	"net/http"
@@ -52,7 +53,7 @@ func main() {
 		c.Redirect(http.StatusFound, "/")
 	})
 
-	RegisterApiRoutes(router)
+	api.RegisterApiRoutes(router)
 	lib.InitDatabase()
 	blog.RegisterBlogRoutes(router)
 	blog.SetupModel()
