@@ -3,7 +3,6 @@ package blog
 import (
 	"fmt"
 	"ginie/lib"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,23 +19,23 @@ func RegisterBlogRoutes(router *gin.Engine) {
 }
 
 func test(c *gin.Context) {
-	c.HTML(http.StatusOK, "blog/test", lib.SetOptions(lib.Option{
+	lib.RenderHTML(c, "blog/test", lib.Option{
 		"message": "Welcome to blog",
-	}))
+	})
 }
 
 func index(c *gin.Context) {
-	c.HTML(http.StatusOK, "blog/index", lib.SetOptions(lib.Option{
+	lib.RenderHTML(c, "blog/index", lib.Option{
 		"posts": GetPosts(),
-	}))
+	})
 }
 
 func view(c *gin.Context) {
 	id := c.Param("id")
-	c.HTML(http.StatusOK, "blog/view", lib.SetOptions(lib.Option{
+	lib.RenderHTML(c, "blog/view", lib.Option{
 		"title": fmt.Sprintf("Post ID %s", id),
 		"content": `
 			This is a the content for the post
 		`,
-	}))
+	})
 }

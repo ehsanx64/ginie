@@ -17,6 +17,7 @@ var ts = map[string]string{
 	"Ginie": "جینی",
 	"Home":  "خانه",
 	"About": "درباره",
+	"Blog":  "بلاگ",
 }
 
 var locale string = "en"
