@@ -9,10 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const (
-	DomainName = "localhost"
-)
-
 func main() {
 	router := gin.Default()
 	router.Use(lib.LanguageMiddleware())
@@ -57,7 +53,9 @@ func main() {
 	})
 
 	RegisterApiRoutes(router)
+	lib.InitDatabase()
 	blog.RegisterBlogRoutes(router)
+	blog.SetupModel()
 
 	router.Run() // By default listen and serve on 0.0.0.0:8080
 }

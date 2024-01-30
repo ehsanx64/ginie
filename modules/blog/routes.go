@@ -14,13 +14,21 @@ func RegisterBlogRoutes(router *gin.Engine) {
 	{
 		blogRoute.GET("/", index)
 		blogRoute.GET("/:id", view)
+
+		blogRoute.GET("/test", test)
 	}
 
 }
 
-func index(c *gin.Context) {
+func test(c *gin.Context) {
 	c.HTML(http.StatusOK, "blog/test", lib.SetOptions(lib.Option{
 		"message": "Welcome to blog",
+	}))
+}
+
+func index(c *gin.Context) {
+	c.HTML(http.StatusOK, "blog/index", lib.SetOptions(lib.Option{
+		"posts": GetPosts(),
 	}))
 }
 

@@ -1,0 +1,19 @@
+{{ define "blog/index" -}}
+    {{ template "base/header" . }}
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                {{ range .posts }}
+                    <article>
+                        <h3>{{ .Title }}</h3>
+                        <i>Published at: {{ .CreatedAt }}</i>
+                        <p>{{ .Content }}</p>
+                    </article>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+
+    {{ template "base/footer" . }}
+{{ end }}
