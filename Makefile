@@ -9,6 +9,8 @@ dev-deps:
 
 deps:
 	go get -u github.com/gin-gonic/gin
+	go get -u gorm.io/gorm
+	go get -u gorm.io/driver/mysql
 
 build:
 	go build -o tmp/ginie .

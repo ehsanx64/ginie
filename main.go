@@ -1,6 +1,8 @@
 package main
 
 import (
+	"ginie/lib"
+	"ginie/modules/blog"
 	"html/template"
 	"net/http"
 
@@ -13,10 +15,10 @@ const (
 
 func main() {
 	router := gin.Default()
-	router.Use(LanguageMiddleware())
+	router.Use(lib.LanguageMiddleware())
 
 	router.SetFuncMap(template.FuncMap{
-		"xlate": xlate,
+		"xlate": lib.Xlate,
 	})
 
 	// Define templates
@@ -29,19 +31,19 @@ func main() {
 
 	// Define routes
 	router.GET("/", func(c *gin.Context) {
-		renderHTML(c, "pages/home", Option{
-			"title": xlate("Home"),
+		lib.RenderHTML(c, "pages/home", lib.Option{
+			"title": lib.Xlate("Home"),
 		})
 	})
 
 	router.GET("/about", func(c *gin.Context) {
-		renderHTML(c, "pages/about", Option{
-			"title": xlate("About"),
+		lib.RenderHTML(c, "pages/about", lib.Option{
+			"title": lib.Xlate("About"),
 		})
 	})
 
 	router.GET("/language/:name", func(c *gin.Context) {
-		var l Language
+		var l lib.Language
 		if err := c.ShouldBindUri(&l); err != nil {
 			c.JSON(400, gin.H{
 				"msg": err,
@@ -50,11 +52,12 @@ func main() {
 			return
 		}
 
-		setLanguage(c, l.Name)
+		lib.SetLanguage(c, l.Name)
 		c.Redirect(http.StatusFound, "/")
 	})
 
 	RegisterApiRoutes(router)
+	blog.RegisterBlogRoutes(router)
 
 	router.Run() // By default listen and serve on 0.0.0.0:8080
 }

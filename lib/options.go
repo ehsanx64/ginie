@@ -1,4 +1,4 @@
-package main
+package lib
 
 import (
 	"log"
@@ -11,7 +11,7 @@ type Option map[string]any
 type NavLink map[string]string
 type MainMenu map[int]NavLink
 
-func setOptions(args Option) gin.H {
+func SetOptions(args Option) gin.H {
 	out := gin.H{}
 
 	for k, v := range args {
@@ -21,19 +21,23 @@ func setOptions(args Option) gin.H {
 	out["AppName"] = "Ginie"
 	out["MainMenu"] = MainMenu{
 		0: NavLink{
-			"title": xlate("Home"),
+			"title": Xlate("Home"),
 			"url":   "/",
 		},
 		1: NavLink{
-			"title": xlate("About"),
+			"title": Xlate("About"),
 			"url":   "/about",
+		},
+		2: NavLink{
+			"title": Xlate("Blog"),
+			"url":   "/blog",
 		},
 	}
 
 	return out
 }
 
-func renderHTML(c *gin.Context, template string, options Option) {
+func RenderHTML(c *gin.Context, template string, options Option) {
 	locale := c.GetString("locale")
 
 	rtl := false
@@ -56,5 +60,5 @@ func renderHTML(c *gin.Context, template string, options Option) {
 
 	log.Println("Active template:", templ)
 	log.Println("Options:", opts)
-	c.HTML(http.StatusOK, templ, setOptions(opts))
+	c.HTML(http.StatusOK, templ, SetOptions(opts))
 }

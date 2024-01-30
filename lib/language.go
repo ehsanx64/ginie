@@ -1,6 +1,7 @@
-package main
+package lib
 
 import (
+	"ginie/config"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +21,7 @@ var ts = map[string]string{
 
 var locale string = "en"
 
-func xlate(key string) string {
+func Xlate(key string) string {
 	log.Println("xlate(", locale, ")")
 	if locale == "fa" {
 		if val, ok := ts[key]; ok {
@@ -31,16 +32,16 @@ func xlate(key string) string {
 	return key
 }
 
-func setXlate(lang string) {
+func SetXlate(lang string) {
 	locale = lang
 }
 
-func setLanguage(c *gin.Context, locale string) {
+func SetLanguage(c *gin.Context, locale string) {
 	c.Set("locale", locale)
-	c.SetCookie(cookieName, locale, 0, "/", DomainName, false, true)
+	c.SetCookie(cookieName, locale, 0, "/", config.DomainName, false, true)
 }
 
-func getLanguage(c *gin.Context) (string, error) {
+func GetLanguage(c *gin.Context) (string, error) {
 	cookie, err := c.Cookie(cookieName)
 
 	if err != nil {
@@ -55,8 +56,8 @@ func getLanguage(c *gin.Context) (string, error) {
  */
 func LanguageMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		locale, _ := getLanguage(c)
-		setXlate(locale)
+		locale, _ := GetLanguage(c)
+		SetXlate(locale)
 		c.Set("locale", locale)
 	}
 }
