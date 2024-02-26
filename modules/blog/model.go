@@ -13,6 +13,9 @@ type Post struct {
 	Title   string
 	Content string
 	Tags    []*Tag `gorm:"many2many:post_tags;"`
+
+	CategoryID uint
+	Category   Category `gorm:"constraint:OnUpdate:SET NULL,OnDelete:SET NULL;"`
 }
 
 type Tag struct {
@@ -21,6 +24,14 @@ type Tag struct {
 	Name  string
 	Title string
 	Post  []*Post `gorm:"many2many:post_tags;"`
+}
+
+type Category struct {
+	gorm.Model
+
+	Name     string
+	Title    string
+	ParentId uint
 }
 
 var samplePosts = []Post{
@@ -36,6 +47,11 @@ var samplePosts = []Post{
 				Name:  "tag2",
 				Title: "Tag 2",
 			},
+		},
+		Category: Category{
+			Name:     "category1",
+			Title:    "Category 1",
+			ParentId: 0,
 		},
 	},
 	{
@@ -102,6 +118,7 @@ func SetupModel() {
 	var tables = []interface{}{
 		&Post{},
 		&Tag{},
+		&Category{},
 	}
 
 	db.Migrator().DropTable("post_tags")
@@ -113,7 +130,27 @@ func SetupModel() {
 	}
 
 	// Migrate the schema
-	db.AutoMigrate(&Post{}, &Tag{})
+	db.AutoMigrate(&Post{}, &Tag{}, &Category{})
+
+	/*
+		firstCategory := &Category{
+			Name:     "first",
+			Title:    "First",
+			ParentId: 0,
+		}
+
+		secondCategory := &Category{
+			Name:     "second",
+			Title:    "Second",
+			ParentId: 0,
+		}
+
+		alphaCategory := &Category{
+			Name:     "alpha",
+			Title:    "Alpha",
+			ParentId: 1,
+		}
+	*/
 
 	// Check and if there are no records add some test items
 	var posts []Post
