@@ -5,7 +5,7 @@ dev:
 	air
 
 dev-deps:
-	go install github.com/cosmtrek/air@latest
+	go install github.com/air-verse/air@latest
 
 deps:
 	go get -u github.com/gin-gonic/gin
