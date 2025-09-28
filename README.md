@@ -28,7 +28,7 @@ Web Application powered by Gin
 ### Backend
 - **Framework:** Gin
 - **Templating:** `html/template`
-- **Database:** SQLite, GORM
+- **Database:** MySQL, GORM
 
 ### Frontend
 - **UI:** Materialize CSS, Alpine.js
